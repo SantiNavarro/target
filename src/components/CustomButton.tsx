@@ -18,6 +18,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 32,
     elevation: 3,
     backgroundColor: "black",
+    maxWidth: 140
   },
   text: {
     fontSize: 12,

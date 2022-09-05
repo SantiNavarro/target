@@ -19,13 +19,13 @@ const formReducer = (state, action) => {
     case "PASSWORD_CHANGE":
       return {
         ...state,
-        isValidPassword: isValidPassword(action.payload),
+        validPassword: isValidPassword(action.payload),
         password: action.payload,
       };
     case "EMAIL_CHANGE":
       return {
         ...state,
-        isValidEmail: isValidEmail(action.payload),
+        validEmail: isValidEmail(action.payload),
         email: action.payload,
       };
     default:
@@ -48,9 +48,6 @@ const LoginScreen = ({ navigation }) => {
     });
   };
 
-  console.log("formState");
-  console.log(formState);
-
   const handleOnSubmit = useCallback(() => {
     loginMutation.mutate();
   }, [loginMutation]);
@@ -63,19 +60,17 @@ const LoginScreen = ({ navigation }) => {
   };
 
   useEffect(() => {
-    console.log("loginMutation");
-    console.log(loginMutation);
-
-    if (loginMutation.isSuccess) {
-      // const { email, name } = loginMutation?.data?.data?.data || {};
-      // const { client, uid } = loginMutation?.data?.headers || {};
-      // const accessToken = loginMutation?.data?.headers["access-token"] || "";
+    if (
+      loginMutation.isSuccess &&
+      formState.validEmail &&
+      formState.validPassword
+    ) {
       navigation.navigate("App");
-      // dispatch(signIn({ email, name, accessToken, client, uid }));
     }
     if (loginMutation.isError) {
       showToast();
     }
+    () => loginMutation.reset();
   }, [loginMutation]);
 
   return (
@@ -86,29 +81,54 @@ const LoginScreen = ({ navigation }) => {
           "flex w-full content-center items-center justify-center flex-col"
         )}
       >
-        <Text style={tw.style("text-xs w-4/6 text-center mt-20 mb-6 ")}>
+        <Text
+          style={tw.style(
+            "text-xs w-4/6 text-center mt-[20px] mb-[6px] tracking-[2px]"
+          )}
+        >
           EMAIL
         </Text>
+
         <TextInput
           onChangeText={(input: string) =>
             handleFormChange("EMAIL_CHANGE", input)
           }
-          style={tw.style("border-black border-1 border-solid h-40 w-4/6")}
+          style={tw.style(
+            "border-black border-[1px] border-solid h-[40px] w-4/6"
+          )}
         />
-        <Text style={tw.style("text-xs w-4/6 text-center mt-20 mb-6 ")}>
+        {formState.validEmail ? null : (
+          <Text style={tw.style("text-xs text-red-600")}>
+            Oops! Email not valid
+          </Text>
+        )}
+        <Text
+          style={tw.style(
+            "text-xs w-4/6 text-center mt-[20px] mb-[6px] tracking-[2px]"
+          )}
+        >
           PASSWORD
         </Text>
         <TextInput
           secureTextEntry={true}
           onChangeText={(input) => handleFormChange("PASSWORD_CHANGE", input)}
-          style={tw.style("border-black border-1 border-solid h-40 w-4/6")}
+          style={tw.style(
+            "border-black border-[1px] border-solid h-[40px] w-4/6"
+          )}
         />
       </View>
-      <View style={tw.style("w-130 self-center mt-20 mb-20")}>
+      <View style={tw.style("w-[130px] self-center mt-[20px] mb-[20px]")}>
         {loginMutation.isLoading ? (
           <ActivityIndicator size="large" color="#ceaa18" />
         ) : (
-          <CustomButton title="SIGN IN" onPress={() => handleOnSubmit()} />
+          <CustomButton
+            title="SIGN IN"
+            onPress={() =>
+              formState.validEmail &&
+              formState.validPassword &&
+              handleOnSubmit()
+            }
+          />
         )}
       </View>
 
@@ -120,14 +140,16 @@ const LoginScreen = ({ navigation }) => {
         <Text style={tw.style("text-[11px]")}>Forgot your password?</Text>
 
         <Text
-          style={tw.style("text-[13px] text-bold tracking[4px] mt-22 mb-12")}
+          style={tw.style(
+            "text-[13px] font-bold tracking-[4px] mt-[22px] mb-[12px]"
+          )}
         >
           CONNECT WITH FACEBOOK
         </Text>
 
         <TextInput
           style={tw.style(
-            "w-[60%] text-center py-20 text-12 border-y-black border-y-1 border-solid mt-80 tracking-[2px] text-bold"
+            "w-[50%] text-center py-[20px] text-[12px] border-t-black border-t-[1px] border-solid mt-[80px] tracking-[2px] font-bold"
           )}
         >
           SIGN UP

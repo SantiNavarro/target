@@ -1,25 +1,20 @@
-import { Text, View, StyleSheet } from "react-native";
+import { Text, View } from "react-native";
+import tw from "twrnc";
 import CustomButton from "../components/CustomButton";
 import Layout from "../components/Layout";
 
 const HomeScreen = ({ navigation }) => {
   return (
     <Layout>
-      <Text style={styles.text}>Home</Text>
-      <CustomButton
-        title="LOG OUT"
-        onPress={() => navigation.navigate("Auth")}
-      />
+      <View style={tw.style("flex items-center")}>
+        <Text style={tw.style("w-full text-[#424242] p-[20px]")}>Home</Text>
+        <CustomButton
+          title="LOG OUT"
+          onPress={() => navigation.navigate("Auth")}
+        />
+      </View>
     </Layout>
   );
 };
-
-const styles = StyleSheet.create({
-  text: {
-    width: "100%",
-    color: "#424242",
-    padding: 20,
-  },
-});
 
 export default HomeScreen;

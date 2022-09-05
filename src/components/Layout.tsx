@@ -1,31 +1,21 @@
-import { StyleSheet, ImageBackground, View } from "react-native";
+import { ImageBackground, View } from "react-native";
+import tw from "twrnc";
 
 type Props = {
   children: React.ReactNode;
 };
 const Layout = ({ children }: Props) => {
   return (
-    <View style={styles.container}>
+    <View style={tw.style("flex-1")}>
       <ImageBackground
         source={require("../../assets/backgroundTemplate.png")}
         resizeMode="cover"
-        style={styles.image}
+        style={tw.style("flex-1 justify-center")}
       >
         {children}
       </ImageBackground>
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    
-  },
-  image: {
-    flex: 1,
-    justifyContent: "center",
-  },
-});
 
 export default Layout;
