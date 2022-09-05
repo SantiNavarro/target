@@ -1,13 +1,11 @@
 import axios from "axios";
 
-const baseUrl = "http://target-mvd-api.herokuapp.com/";
+const baseUrl = "";
 const baseHeaders = {
   headers: {
     "Content-Type": "application/json",
     Accept: "application/json",
-    // "Token-Type": "Bearer",
   },
-  // data: {},
 };
 export const signInRequest = async (email: string, password: string) => {
   const body = {
